@@ -6,6 +6,9 @@ export default {
       fontFamily: {
         playfair: ['"Playfair Display"', "serif"],
       },
+       backgroundImage: {
+        'custom-gradient': `linear-gradient(to top left, gold, white), linear-gradient(to bottom right, lightgoldenrodyellow, gold)`,
+      },
     },
   },
   plugins: [],
