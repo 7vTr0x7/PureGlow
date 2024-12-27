@@ -23,12 +23,29 @@ const LeftPanel: React.FC = () => {
       </div>
       <p>Glow Tones</p>
 
-      <div className="bg-[#302a2b] h-64 sm:h-96 rounded-2xl mt-5 sm:mt-7 overflow-hidden">
+      <div className="relative bg-[#302a2b] h-96  rounded-[34px] mt-5 md:h-[500px] pb-32 sm:mt-7">
+        <div className="absolute top-3 left-3 flex items-center gap-1">
+          <img alt="logo" src={logo} className="h-8 w-8" />
+          <p className="text-sm text-white">Elysian</p>
+        </div>
         <img
           src={gif3}
           alt="gif3"
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-full object-cover rounded-t-[34px]"
         />
+        <div className="px-7 py-5 text-white text-xl font-semibold">
+          <p>Book Immediately</p>
+          <p>for your</p>
+          <div className="flex justify-between items-center">
+            <div>
+              <span> natural </span>
+              <i className="text-yellow-300">beauty</i>
+            </div>
+            <p>
+              <i className="text-yellow-300 text-xs">www.elysian.com</i>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa";
 import { gsap } from "gsap";
 import logo from "../../assets/images/logo.png";
 import product from "../../assets/images/product.png";
+import { PiStarFourFill } from "react-icons/pi";
 
 const CenterPanel: React.FC = () => {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
@@ -81,7 +82,7 @@ const CenterPanel: React.FC = () => {
   return (
     <div className="relative bottom-3 px-6 h-full">
       <div className="bg-[#302a2b] rounded-2xl p-2">
-        <div className="relative bg-gradient-to-br from-pink-300 via-white to-pink-500 w-full h-72 rounded-2xl py-10">
+        <div className="relative bg-gradient-to-br from-[#f0cca9] via-white to-[#f0cca9] w-full h-72 rounded-2xl py-10">
           <div className="absolute top-3 left-3 flex items-center gap-1">
             <img alt="logo" src={logo} className="h-8 w-8" />
             <p className="text-sm">Elysian</p>
@@ -127,6 +128,60 @@ const CenterPanel: React.FC = () => {
           </div>
           <button className="px-5 rounded-lg bg-[#cc8a68]">Shop Now</button>
         </div>
+      </div>
+      <div className="mt-10 flex justify-between items-center">
+        <div>
+          <p className="font-semibold text-[#cc8a68]">satisfaction</p>
+          <p>by beautiful women:</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PiStarFourFill className="text-[#cc8a68] text-3xl" />
+          <p className="text-5xl">4.9</p>
+        </div>
+      </div>
+      <div className="mt-10">
+        <div className="flex relative  ">
+          <img
+            src="https://randomuser.me/api/portraits/women/2.jpg"
+            alt="Avatar 1"
+            className="h-12 w-12 rounded-full border-2 border-white absolute"
+            style={{ left: "0" }}
+          />
+          <img
+            src="https://randomuser.me/api/portraits/women/2.jpg"
+            alt="Avatar 2"
+            className="h-12 w-12 rounded-full border-2 border-white absolute"
+            style={{ left: "30px", zIndex: "-1" }}
+          />
+          <img
+            src="https://randomuser.me/api/portraits/women/3.jpg"
+            alt="Avatar 3"
+            className="h-12 w-12 rounded-full border-2 border-white absolute"
+            style={{ left: "60px", zIndex: "-2" }}
+          />
+          <img
+            src="https://randomuser.me/api/portraits/women/4.jpg"
+            alt="Avatar 4"
+            className="h-12 w-12 rounded-full border-2 border-white absolute"
+            style={{ left: "90px", zIndex: "-3" }}
+          />
+        </div>
+        <p className="flex justify-end items-end mt-7">Show all</p>
+      </div>
+
+      <div className="bg-gradient-to-br from-[#fff8f5] to-[#f0cca9] px-4 py-5 rounded-lg mt-14">
+        <div className="flex items-center justify-between">
+          <p className="bg-[#cc8a68] px-4 py-1 rounded-2xl inline-block">
+            <i className="text-white text-xs flex items-center">
+              www.elysian.com
+            </i>
+          </p>
+          <img alt="logo" src={logo} className="h-8 w-8" />
+        </div>
+        <p className="mt-3">Natural Beauty,</p>
+        <p>
+          the charm of <span className="font-semibold">Elysian Essence!</span>
+        </p>
       </div>
     </div>
   );
