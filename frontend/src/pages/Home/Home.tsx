@@ -10,7 +10,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Home: React.FC = () => {
   useEffect(() => {
-    // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
       smooth: true,
       lerp: 0.1,
@@ -23,7 +22,6 @@ const Home: React.FC = () => {
 
     requestAnimationFrame(raf);
 
-    // GSAP animation for panels
     gsap.fromTo(
       ".panel",
       { opacity: 0, y: 50 },
@@ -47,7 +45,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-3 h-screen bg-[#f4f3f4] font-playfair">
+    <div className="flex flex-col lg:grid lg:grid-cols-3 h-auto bg-[#f4f3f4] font-playfair">
       <div className="panel col-span-1 p-4 lg:p-12">
         <LeftPanel />
       </div>

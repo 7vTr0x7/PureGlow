@@ -2,6 +2,8 @@ import React from "react";
 
 import logo from "../../assets/images/logo.png";
 
+import gif3 from "../../assets/videos/giphy2.gif";
+
 const LeftPanel: React.FC = () => {
   return (
     <div className=" h-full ">
@@ -20,6 +22,14 @@ const LeftPanel: React.FC = () => {
         </div>
       </div>
       <p>Glow Tones</p>
+
+      <div className="bg-[#302a2b] h-64 sm:h-96 rounded-2xl mt-5 sm:mt-7 overflow-hidden">
+        <img
+          src={gif3}
+          alt="gif3"
+          className="w-full h-full object-cover rounded-2xl"
+        />
+      </div>
     </div>
   );
 };

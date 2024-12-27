@@ -7,6 +7,7 @@ import product from "../../assets/images/product.png";
 const CenterPanel: React.FC = () => {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const numberRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const productRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const paragraph =
@@ -63,6 +64,14 @@ const CenterPanel: React.FC = () => {
       ease: "power1.inOut",
     });
 
+    gsap.to(productRef.current, {
+      x: -20,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+    });
+
     return () => {
       timeline.kill();
       numberTimeline.kill();
@@ -72,18 +81,22 @@ const CenterPanel: React.FC = () => {
   return (
     <div className="relative bottom-3 px-6 h-full">
       <div className="bg-[#302a2b] rounded-2xl p-2">
-        <div className="relative bg-gradient-to-br from-pink-300 via-white to-pink-300 w-full h-72 rounded-2xl py-10">
+        <div className="relative bg-gradient-to-br from-pink-300 via-white to-pink-500 w-full h-72 rounded-2xl py-10">
           <div className="absolute top-3 left-3 flex items-center gap-1">
             <img alt="logo" src={logo} className="h-8 w-8" />
             <p className="text-sm">Elysian</p>
           </div>
-          <div className="flex justify-center rotate-12">
+          <div
+            className="flex justify-center"
+            style={{ transform: "rotate(20deg)" }}>
             <img
-              className="h-80 top-[-6rem] left-[30%] object-contain absolute"
+              className="h-60 top-[-2.5rem] left-[40%] object-contain absolute"
               alt="product"
               src={product}
+              ref={productRef}
             />
           </div>
+
           <div className="absolute bottom-24 left-3 flex items-center gap-2">
             <div className="flex items-center">
               <FaStar className="text-black" />
@@ -92,7 +105,7 @@ const CenterPanel: React.FC = () => {
             <p>10k Reviews</p>
           </div>
           <div
-            className="absolute bottom-5 left-3 text-black text-xs "
+            className="absolute bottom-5 left-3 text-black text-xs"
             ref={descriptionRef}></div>
         </div>
         <div className="px-5 py-6 flex justify-between text-white">
@@ -108,7 +121,7 @@ const CenterPanel: React.FC = () => {
             <p
               className="text-2xl font-bold"
               ref={(el) => (numberRefs.current[1] = el)}>
-              50<span className="text-xs">+</span>
+              50k<span className="text-xs">+</span>
             </p>
             <p className="text-xs font-light">customers</p>
           </div>
