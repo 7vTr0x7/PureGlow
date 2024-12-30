@@ -13,7 +13,9 @@ const UserSkinScore: React.FC = () => {
 
   const fetchUser = async (): Promise<void> => {
     try {
-      const response = await fetch(`${apiUrl}/api/user/data`, {
+      const userId = JSON.parse(localStorage.getItem("user") as string)
+
+      const response = await fetch(`${apiUrl}/api/user/data/${userId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
