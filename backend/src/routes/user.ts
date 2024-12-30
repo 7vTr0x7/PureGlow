@@ -1,4 +1,4 @@
-import express,{Router} from "express"
+import {Router} from "express"
 import { getAllProducts, registerUser, updateSkinData, userLogin, userLogout,getUserData } from "../controllers/user.js"
 import { isAuthenticated } from "../middlewares/auth.js"
 
