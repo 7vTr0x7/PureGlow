@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 enum SkinType {
   Normal = "Normal",
@@ -88,7 +88,7 @@ const productSchema: Schema = new mongoose.Schema(
   }
 );
 
-const Product = mongoose.model<IProduct>("Product", productSchema);
+const Product:Model<IProduct> = mongoose.model<IProduct>("Product", productSchema);
 
 export default Product;
 export { IProduct, SkinType };

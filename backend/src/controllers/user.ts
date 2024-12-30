@@ -4,6 +4,8 @@ import { IUser } from "../models/user.model.js"
 
 type UserResponse = IUser | null
 
+
+
 export const getAllProducts = async(req:Request,res:Response) => {
 try {
    const products:IProduct[] = await Product.find()
