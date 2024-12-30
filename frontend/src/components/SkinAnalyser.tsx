@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import { FiUpload } from 'react-icons/fi';
+
+type TagType = {
+  tag: {
+    en: string;
+  };
+  confidence: string;
+}[];
 
 const SkinAnalyser: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const [tags, setTags] = useState<[]>([]);
+  const [tags, setTags] = useState<TagType>([]);
   const [error, setError] = useState<string | null>(null);
-
-  const API_KEY = import.meta.env.VITE_CLARIFAI_API_KEY; // Store your Clarifai API key in env
-  const API_URL = 'https://api.clarifai.com/v2/models/skin-disease-model/outputs';
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -21,85 +24,93 @@ const SkinAnalyser: React.FC = () => {
     }
   };
 
- const handleAnalyze = async () => {
-  setError(null);
-  setTags([]);
+  const handleAnalyze = async () => {
+    setError(null);
+    setTags([]);
 
-  if (!image) {
-    setError('Please upload an image to analyze.');
-    return;
-  }
-
-  const loadingToast = toast.loading('Analyzing your image...');
-
-  try {
-    const imageBase64 = (image as string).split(',')[1];
-    if (!imageBase64) {
-      toast.error('Invalid image data. Please try again.', { id: loadingToast });
+    if (!image) {
+      setError('Please upload an image to analyze.');
       return;
     }
 
-    await axios.options(API_URL, {
-      headers: {
-        Authorization: `Key ${API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const response = await axios.post(
-      API_URL,
-      {
-        inputs: [
-          {
-            data: {
-              image: {
-                base64: imageBase64,
-              },
-            },
-          },
-        ],
-      },
-      {
-        headers: {
-          Authorization: `Key ${API_KEY}`,
-          'Content-Type': 'application/json',
-        },
+    try {
+      const imageBase64 = (image as string).split(',')[1];
+      if (!imageBase64) {
+        setError('Invalid image data. Please try again.');
+        return;
       }
-    );
 
-    if (response.status === 200) {
-      const skinTags = response.data.outputs[0].data.concepts;
-      setTags(skinTags);
-      toast.success('Image analyzed successfully!', { id: loadingToast });
-    } else {
-      toast.error('Failed to analyze the image.', { id: loadingToast });
+      const API_KEY = import.meta.env.VITE_IMAGGA_API_KEY;
+      const API_SECRET = import.meta.env.VITE_IMAGGA_SECRET_KEY;
+
+      const formData = new URLSearchParams();
+      formData.append('image_base64', imageBase64);
+
+      const response = await fetch('https://api.imagga.com/v2/tags', {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${btoa(`${API_KEY}:${API_SECRET}`)}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      });
+
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error('Imagga API Error:', errorDetails);
+        throw new Error(errorDetails.status.text || 'Unknown error');
+      }
+
+      const data = await response.json();
+      if (data.status.type === 'success') {
+        const relevantKeywords = 'skin';
+        const filteredTags = data.result.tags.filter((tag: TagType[number]) =>
+          tag.tag.en.toLowerCase().includes(relevantKeywords)
+        );
+
+        setTags(filteredTags);
+      } else {
+        setError('Failed to analyze the image.');
+      }
+    } catch (error: any) {
+      console.error('Error:', error);
+      setError('Error analyzing photo: ' + error.message);
     }
-  } catch (error: any) {
-    console.error('Error:', error);
-    toast.error('Error analyzing photo: ' + error.message, { id: loadingToast });
-  }
-};
-
+  };
 
   return (
-    <div>
-      <Toaster />
-      <h1>Skin Analyser</h1>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button onClick={handleAnalyze}>Analyze</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {tags.length > 0 && (
-        <div>
-          <h2>Analysis Results</h2>
-          <ul>
-            {tags.map((tag: any, index: number) => (
-              <li key={index}>
-                {tag.name} - Confidence: {(tag.value * 100).toFixed(2)}%
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="min-h-screen bg-[#f4f3f4] font-playfair text-black flex flex-col items-center justify-center px-4 py-5">
+      <header className="text-center text-black">
+        <h1 className="text-5xl font-bold mb-4">Skin Analyser AI</h1>
+        <p className="text-lg font-light max-w-2xl mx-auto">
+          Harness the power of AI to uncover insights about your skin. Upload an image and explore the analysis.
+        </p>
+      </header>
+      <div className="mt-10 w-full max-w-xl">
+        <label className="flex flex-col items-center justify-center space-y-3 py-10 border-2 border-dashed border-black rounded-lg cursor-pointer bg-opacity-20 bg-[#cc8a68] text-black hover:bg-opacity-30 transition duration-300">
+          <FiUpload className="text-6xl" />
+          <span className="text-xl">Upload Your Image</span>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+        </label>
+    
+        <button
+          onClick={handleAnalyze}
+          className="mt-6 w-full bg-[#cc8a68] text-white py-3 rounded-lg font-medium "
+        >
+          Analyze My Skin
+        </button>
+        {error && (
+          <p className="mt-4 text-center text-red-200 font-semibold">
+            {error}
+          </p>
+        )}
+      
+      </div>
     </div>
   );
 };

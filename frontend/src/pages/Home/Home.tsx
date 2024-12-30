@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Home: React.FC = () => {
 useEffect(() => {
   const lenis = new Lenis({
-    lerp: 0.1,  // Keeping lerp if it's valid
+    lerp: 0.1,  
   });
 
   const raf = (time: number) => {
