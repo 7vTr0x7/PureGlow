@@ -6,7 +6,6 @@ import Product, { IProduct } from "../models/product.model.js"
 export const addProduct = async(req:Request,res:Response) => {
 try {
    const product = await Product.create(req.body)
-   console.log(product)
    if(product) {
    res.json({
     success:true,
