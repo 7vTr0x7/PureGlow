@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import RecommendedProducts from './RecommendedProducts';
 
 const UserSkinScore: React.FC = () => {
   const [skinData, setSkinData] = useState<{ acne: number; darkSpots: number; hydrationLevel: number }>({
@@ -52,10 +53,10 @@ const UserSkinScore: React.FC = () => {
 
   return  skinData && (
     <div
-      className="flex flex-col items-center   bg-gray-100 text-center text-gray-800"
+      className="flex flex-col  justify-between items-center pb-10  bg-gray-100 text-center text-gray-800"
     >
       <h1 className="text-3xl font-bold mb-6">Your Skin Score</h1>
-     <div className="space-y-4 flex justify-between items center">
+     <div className=" flex gap-10 items-center">
         <div>
           <span className="font-semibold">Acne Level:</span> {skinData?.acne}
         </div>
@@ -66,6 +67,11 @@ const UserSkinScore: React.FC = () => {
           <span className="font-semibold">Hydration Level:</span> {skinData?.hydrationLevel}
         </div>
       </div>
+
+
+        <h1 className='mb-3 text-xl flex justify-start px-20 mt-8 text-start w-full font-semibold'>/Recommended Products</h1>
+
+      <RecommendedProducts acneLevel={skinData?.acne} darkSpots={skinData?.darkSpots} hydrationLevel={skinData?.hydrationLevel} />
     </div>
   );
 };

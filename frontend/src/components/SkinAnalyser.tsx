@@ -123,7 +123,7 @@ const SkinAnalyser: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f3f4] font-playfair text-black flex flex-col items-center justify-center px-4 py-5">
+    <div className="min-h-screen bg-[#f4f3f4] font-playfair text-black flex flex-col items-center justify-center px-4 pt-5">
       <header className="text-center text-black">
         <h1 className="text-5xl font-bold mb-4">Skin Analyser AI</h1>
         <p className="text-lg font-light max-w-2xl mx-auto">

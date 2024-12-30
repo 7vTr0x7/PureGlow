@@ -7,6 +7,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SkinAnalyzer from "../../components/SkinAnalyser";
 import UserSkinScore from "../../components/UserSkinScore";
+import Products from "../../components/Products";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,6 +63,7 @@ useEffect(() => {
 
     <SkinAnalyzer />
     <UserSkinScore />
+    <Products/>
     </>
   );
 };

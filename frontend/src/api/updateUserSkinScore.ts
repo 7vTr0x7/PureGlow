@@ -5,7 +5,7 @@ export const updateUserSkinScore = async (acne:number,darkSpots:number,hydration
 
      try {
       const userId = JSON.parse(localStorage.getItem("user") as string)
-      const response = await fetch(`http://localhost:4000/api/user/update/skin-data/677289e061e52c39c42c7780`, {
+      const response = await fetch(`${API_URL}/api/user/update/skin-data/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
