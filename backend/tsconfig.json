@@ -6,8 +6,9 @@
     "outDir": "./dist",
     "moduleResolution": "Node",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   }
 }
