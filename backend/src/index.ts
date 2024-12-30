@@ -11,14 +11,14 @@ const app = express();
 const httpServer = createServer(app);
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-  ],
+  origin: ["http://localhost:5173"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Handle preflight requests
 app.use(express.json());
 app.use(cookieParser());
 
@@ -29,11 +29,10 @@ app.use((req, res, next) => {
 
 const io = new Server(httpServer, {
   cors: {
-    origin: corsOptions.origin,
+    origin: "http://localhost:5173",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
   },
-  transports: ["websocket", "polling"], 
+  transports: ["websocket", "polling"],
 });
 
 app.set("io", io);
@@ -48,7 +47,7 @@ io.on("connection", (socket) => {
 
   socket.on("UserUpdated", () => {
     console.log("Data updated event received from client");
-    io.emit("UserUpdated"); 
+    io.emit("UserUpdated");
   });
 
   socket.on("disconnect", () => {
