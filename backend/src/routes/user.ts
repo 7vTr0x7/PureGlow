@@ -10,7 +10,7 @@ router.post("/logout",userLogout)
 router.post("/register",registerUser)
 
 router.get("/products",isAuthenticated,getAllProducts)
-router.get("/data",isAuthenticated,getUserData)
+router.get("/data/:id",isAuthenticated,getUserData)
 router.put("/update/skin-data/:id",isAuthenticated,updateSkinData)
 
 

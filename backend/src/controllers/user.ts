@@ -109,7 +109,8 @@ try {
 
 export const getUserData = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const user = req.user; 
+    const user:UserResponse = await User.findById(req.params.id)
+
     if (user) {
       res.json({
         success: true,
