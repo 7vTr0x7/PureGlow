@@ -1,16 +1,15 @@
 import jwt from "jsonwebtoken";
 import { Response } from "express";
+import { IUser } from "../models/user.model";
 
-interface Admin {
-  _id: string;
-}
+
 
 export const sendCookies = (
-  admin: Admin,
+  user: IUser,
   res: Response,
   message: string
 ): Response => {
-  const token = jwt.sign({ _id: admin._id }, process.env.JWT_SECRET as string);
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET as string);
 
   return res
     .status(200)
