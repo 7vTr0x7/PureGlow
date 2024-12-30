@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="mt-3 flex items-center space-x-2">
           <span className="text-yellow-500">⭐ {product.ratings?.average}</span>
-          <span className="text-gray-600 text-sm">({product.ratings.average} reviews)</span>
+          <span className="text-gray-600 text-sm">({product.ratings?.average} reviews)</span>
         </div>
 
         <div className="mt-4 flex justify-center items-center">
