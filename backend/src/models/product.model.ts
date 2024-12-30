@@ -1,17 +1,15 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-enum SkinType {
-  Normal = "Normal",
-  Oily = "Oily",
-  Dry = "Dry",
-  All = "All Skin Type",
-}
+
 
 interface SkinHealthMetrics {
   acneSuitability: number;
   hydrationSuitability: number;
   darkSpotsSuitability: number;
-  skinType: Array<SkinType>;
+   skinSuitability: {
+    minSkinScore:number;
+    maxSkinScore:number;
+  }
 }
 
 interface IProduct extends Document {
@@ -77,10 +75,20 @@ const productSchema: Schema = new mongoose.Schema(
         min: 0,
         max:5,
       },
-      skinType: {
-        type: [String],
-        enum: Object.values(SkinType),
-      },
+      skinSuitability: {
+        minSkinScore:{
+          type: Number,
+        min: 0,
+        max: 100,
+        },
+        
+        maxSkinScore:{
+          type: Number,
+        min: 0,
+        max: 100,
+        },
+
+      } 
     },
   },
   {
@@ -91,4 +99,4 @@ const productSchema: Schema = new mongoose.Schema(
 const Product:Model<IProduct> = mongoose.model<IProduct>("Product", productSchema);
 
 export default Product;
-export { IProduct, SkinType };
+export { IProduct };

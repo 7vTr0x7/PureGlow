@@ -4,7 +4,6 @@ interface ISkinData {
   acne?: number;
   hydrationLevel?: number;
   darkSpots?: number;
-  skinType?: string;
 }
 
 interface IUser extends Document {
@@ -43,9 +42,7 @@ const UserSchema: Schema = new mongoose.Schema(
         min: 1,
         max: 100,
       },
-      skinType: {
-        type: String,
-      },
+     
     },
   },
   {

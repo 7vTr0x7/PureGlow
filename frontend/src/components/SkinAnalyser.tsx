@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
+import cv from 'opencv.js';
 import { FiUpload } from 'react-icons/fi';
-
-type TagType = {
-  tag: {
-    en: string;
-  };
-  confidence: string;
-}[];
+import { toast, Toaster } from 'react-hot-toast';
+import { updateUserSkinScore } from '../api/updateUserSkinScore';
 
 const SkinAnalyser: React.FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const [tags, setTags] = useState<TagType>([]);
+  const [skinMetrics, setSkinMetrics] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,55 +22,103 @@ const SkinAnalyser: React.FC = () => {
 
   const handleAnalyze = async () => {
     setError(null);
-    setTags([]);
+    setSkinMetrics(null);
 
     if (!image) {
       setError('Please upload an image to analyze.');
       return;
     }
 
+    toast.loading('Analyzing your skin...');
     try {
-      const imageBase64 = (image as string).split(',')[1];
-      if (!imageBase64) {
-        setError('Invalid image data. Please try again.');
-        return;
-      }
+      const img = new Image();
+      img.src = image as string;
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const src = cv.matFromImageData(imgData);
 
-      const API_KEY = import.meta.env.VITE_IMAGGA_API_KEY;
-      const API_SECRET = import.meta.env.VITE_IMAGGA_SECRET_KEY;
+          // Convert to YCrCb for skin region segmentation
+          const ycrcb = new cv.Mat();
+          cv.cvtColor(src, ycrcb, cv.COLOR_RGBA2YCrCb);
 
-      const formData = new URLSearchParams();
-      formData.append('image_base64', imageBase64);
+          // Create skin mask
+          const lower = new cv.Mat(ycrcb.rows, ycrcb.cols, cv.CV_8UC4, [0, 133, 77, 0]);
+          const upper = new cv.Mat(ycrcb.rows, ycrcb.cols, cv.CV_8UC4, [255, 173, 127, 255]);
+          const skinMask = new cv.Mat();
+          cv.inRange(ycrcb, lower, upper, skinMask);
 
-      const response = await fetch('https://api.imagga.com/v2/tags', {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${btoa(`${API_KEY}:${API_SECRET}`)}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData.toString(),
-      });
+          // 1. Acne Scale (Edge Density)
+          const edges = new cv.Mat();
+          cv.Canny(skinMask, edges, 100, 200);
+          const edgeDensity = cv.countNonZero(edges) / (edges.rows * edges.cols);
 
-      if (!response.ok) {
-        const errorDetails = await response.json();
-        console.error('Imagga API Error:', errorDetails);
-        throw new Error(errorDetails.status.text || 'Unknown error');
-      }
+          // Normalize edge density between reasonable bounds (e.g., 0.02 to 0.2)
+          const acneScaleNormalized = Math.min(Math.max((edgeDensity - 0.02) / (0.2 - 0.02), 0), 1);
+          const acneScale = Math.min(Math.max(Math.round(acneScaleNormalized * 10), 1), 10);
 
-      const data = await response.json();
-      if (data.status.type === 'success') {
-        const relevantKeywords = 'skin';
-        const filteredTags = data.result.tags.filter((tag: TagType[number]) =>
-          tag.tag.en.toLowerCase().includes(relevantKeywords)
-        );
+          // 2. Dark Spot Scale (Improved Calculation)
+          const gray = new cv.Mat();
+          cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
 
-        setTags(filteredTags);
-      } else {
-        setError('Failed to analyze the image.');
-      }
-    } catch (error: any) {
-      console.error('Error:', error);
-      setError('Error analyzing photo: ' + error.message);
+          // Apply GaussianBlur to reduce noise
+          const blurred = new cv.Mat();
+          cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0);
+
+          // Calculate dynamic threshold using Otsu's method
+          const darkSpotsMask = new cv.Mat();
+          cv.threshold(blurred, darkSpotsMask, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
+
+          // Find contours for distinct dark regions
+          const contours = new cv.MatVector();
+          const hierarchy = new cv.Mat();
+          cv.findContours(darkSpotsMask, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+          // Calculate dark spot area
+          let darkSpotArea = 0;
+          for (let i = 0; i < contours.size(); i++) {
+            const contourArea = cv.contourArea(contours.get(i));
+            darkSpotArea += contourArea;
+          }
+
+          // Normalize dark spot density (total dark spot area to image area)
+          const darkSpotDensity = darkSpotArea / (gray.rows * gray.cols);
+
+          // Map to 1-10 scale with realistic bounds (e.g., 0.005 to 0.1)
+          const darkSpotScaleNormalized = Math.min(Math.max((darkSpotDensity - 0.005) / (0.1 - 0.005), 0), 1);
+          const darkSpotScale = Math.min(Math.max(Math.round(darkSpotScaleNormalized * 10), 1), 10);
+
+          // 3. Hydration Level
+          const meanScalar = cv.mean(gray);
+          const hydrationLevel = Math.min(Math.max(Math.round((meanScalar[0] / 255) * 100), 1), 100);
+
+          
+
+          await updateUserSkinScore(acneScale,darkSpotScale,hydrationLevel)
+
+          // Clean up
+          src.delete();
+          ycrcb.delete();
+          skinMask.delete();
+          gray.delete();
+          blurred.delete();
+          darkSpotsMask.delete();
+          edges.delete();
+          contours.delete();
+          hierarchy.delete();
+          lower.delete();
+          upper.delete();
+        }
+      };
+    } catch (err) {
+      setError('Error analyzing photo: ' + (err as Error).message);
+    } finally {
+      toast.dismiss();
     }
   };
 
@@ -97,20 +141,17 @@ const SkinAnalyser: React.FC = () => {
             className="hidden"
           />
         </label>
-    
         <button
+          disabled={!image}
           onClick={handleAnalyze}
-          className="mt-6 w-full bg-[#cc8a68] text-white py-3 rounded-lg font-medium "
+          className={`mt-6 w-full ${image ? 'bg-[#cc8a68]' : 'bg-pink-500'} text-white py-3 rounded-lg font-medium `}
         >
           Analyze My Skin
         </button>
-        {error && (
-          <p className="mt-4 text-center text-red-200 font-semibold">
-            {error}
-          </p>
-        )}
-      
+        {error && <p className="mt-4 text-center text-red-500 font-semibold">{error}</p>}
+        {skinMetrics && <p className="mt-4 text-center text-green-500 font-semibold whitespace-pre-line">{skinMetrics}</p>}
       </div>
+      <Toaster />
     </div>
   );
 };
