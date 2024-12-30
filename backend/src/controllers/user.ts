@@ -2,6 +2,8 @@ import { Request, Response } from "express"
 import Product, { IProduct } from "../models/product.model.js"
 import { IUser } from "../models/user.model.js"
 
+type UserResponse = IUser | null
+
 export const getAllProducts = async(req:Request,res:Response) => {
 try {
    const products:IProduct[] = await Product.find()
@@ -21,7 +23,7 @@ try {
 
 export const updateSkinData = async(req:Request,res:Response) => {
 try {
-   const user:IUser = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true})
+   const user:UserResponse = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true})
    if(user) {
    res.json({
     success:true,
