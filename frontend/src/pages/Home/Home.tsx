@@ -10,40 +10,40 @@ import SkinAnalyzer from "../../components/SkinAnalyser";
 gsap.registerPlugin(ScrollTrigger);
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    const lenis = new Lenis({
-      smooth: true,
-      lerp: 0.1,
-    });
+useEffect(() => {
+  const lenis = new Lenis({
+    lerp: 0.1,  // Keeping lerp if it's valid
+  });
 
-    const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-
+  const raf = (time: number) => {
+    lenis.raf(time);
     requestAnimationFrame(raf);
+  };
 
-    gsap.fromTo(
-      ".panel",
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: ".panel",
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
+  requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
+  gsap.fromTo(
+    ".panel",
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: ".panel",
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none reverse",
+      },
+    }
+  );
+
+  return () => {
+    lenis.destroy();
+  };
+}, []);
+
 
   return (
     <>
