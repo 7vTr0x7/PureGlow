@@ -8,7 +8,6 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "typeRoots": ["/backend/node_modules/@types"]
+    "resolveJsonModule": true
   }
 }
