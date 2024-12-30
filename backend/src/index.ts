@@ -3,6 +3,7 @@ import { initializeDatabase } from "./db/db.connection.js";
 import { config } from "dotenv";
 
 import userRouter from "./routes/user.js"
+import adminRouter from "./routes/admin.js"
 
 
 
@@ -13,6 +14,7 @@ config();
 initializeDatabase();
 
 app.use("/api/user",userRouter)
+app.use("/api/admin",adminRouter)
 
 const PORT = 4000;
 
