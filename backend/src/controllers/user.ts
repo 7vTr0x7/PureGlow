@@ -65,6 +65,7 @@ export const userLogin = async(req:Request,res:Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
+      error:error,
       message: "Failed to login user",
     });
   }
@@ -89,8 +90,10 @@ try {
 
 export const updateSkinData = async(req:Request,res:Response) => {
 try {
-   const user:UserResponse = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true})
+   const user:UserResponse = await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
    if(user) {
+      req.app.get("io").emit("UserUpdated");
+
    res.json({
     success:true,
     user
@@ -100,5 +103,21 @@ try {
    }
 } catch (error) {
      res.status(500).json({success:false,message:"Failed to update user"})
+}
+}
+export const getUserData = async(req:Request,res:Response) => {
+try {
+   const user:UserResponse = req.user
+   if(user) {
+
+   res.json({
+    success:true,
+    user
+   })
+   }else{
+    res.status(404).json({success:false,message:"user not found"})
+   }
+} catch (error) {
+     res.status(500).json({success:false,message:"Failed to get user"})
 }
 }

@@ -36,10 +36,10 @@ const SignupPage: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log(data)
 
       if (data.token) {
         localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user',JSON.stringify((data.user._id)));
         toast.success('Signup successful!');
         navigate('/');
       } else {
@@ -100,7 +100,7 @@ const SignupPage: React.FC = () => {
 
         <div className="mt-6 flex items-center justify-center">
           <span className="text-gray-500 text-sm">Already have an account?</span>
-          <Link to="/login" className="ml-2 text-sm font-medium text-[#cc8a68] hover:text-indigo-500">
+          <Link to="/auth/login" className="ml-2 text-sm font-medium text-[#cc8a68] hover:text-indigo-500">
             Log In
           </Link>
         </div>

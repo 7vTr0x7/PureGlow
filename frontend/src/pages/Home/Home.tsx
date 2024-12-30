@@ -6,6 +6,7 @@ import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SkinAnalyzer from "../../components/SkinAnalyser";
+import UserSkinScore from "../../components/UserSkinScore";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,6 +61,7 @@ useEffect(() => {
     </div>
 
     <SkinAnalyzer />
+    <UserSkinScore />
     </>
   );
 };

@@ -39,6 +39,8 @@ const LoginPage: React.FC = () => {
 
       if (data.token) {
         localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user',  JSON.stringify((data.user._id)));
+
         toast.success('Login successful!');
         navigate('/');
       } else {
@@ -99,7 +101,7 @@ const LoginPage: React.FC = () => {
 
         <div className="mt-6 flex items-center justify-center">
           <span className="text-gray-500 text-sm">Don't have an account?</span>
-          <Link to="/signup" className="ml-2 text-sm font-medium text-[#cc8a68] hover:text-indigo-500">
+          <Link to="/auth/signup" className="ml-2 text-sm font-medium text-[#cc8a68] hover:text-indigo-500">
             Sign Up
           </Link>
         </div>

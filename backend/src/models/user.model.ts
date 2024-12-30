@@ -7,6 +7,7 @@ interface ISkinData {
 }
 
 interface IUser extends Document {
+  _id:string;
   email: string;
   password: string;
   skinData?: ISkinData;
@@ -42,7 +43,7 @@ const UserSchema: Schema = new mongoose.Schema(
         min: 1,
         max: 100,
       },
-     
+    
     },
   },
   {

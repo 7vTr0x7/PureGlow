@@ -10,8 +10,9 @@ const RightPanel: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
     toast.success('Logged out successfully!');
-    navigate('/login');
+    navigate('/auth/login');
   };
 
   return (

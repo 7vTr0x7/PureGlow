@@ -4,13 +4,14 @@ export const updateUserSkinScore = async (acne:number,darkSpots:number,hydration
   const API_URL = import.meta.env.VITE_API_URL;
 
      try {
-      const response = await fetch(`${API_URL}/api/user/login`, {
-        method: 'POST',
+      const userId = JSON.parse(localStorage.getItem("user") as string)
+      const response = await fetch(`http://localhost:4000/api/user/update/skin-data/677289e061e52c39c42c7780`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ acne,darkSpots,hydrationLevel:hydration }),
+        body: JSON.stringify({skinData:{ acne,darkSpots,hydrationLevel:hydration }}),
       });
 
       if (!response.ok) {
