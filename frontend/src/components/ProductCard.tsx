@@ -1,3 +1,5 @@
+import { IProduct } from "./Products";
+
 interface ProductCardProps {
   product: IProduct;
 }
