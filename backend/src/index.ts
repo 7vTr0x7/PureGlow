@@ -1,30 +1,29 @@
 import express from "express";
-import cors,{CorsOptions} from "cors";
+import cors, { CorsOptions } from "cors";
 import { initializeDatabase } from "./db/db.connection.js";
 import { config } from "dotenv";
 
-import userRouter from "./routes/user.js"
-import adminRouter from "./routes/admin.js"
-
-
+import userRouter from "./routes/user.js";
+import adminRouter from "./routes/admin.js";
 
 const app = express();
 app.use(express.json());
 config();
 
-const corsOptions:CorsOptions= {
-  origin:["localhost:5173"],
-  credentials:true
-}
+const corsOptions: CorsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+};
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); 
 
-app.use("/api/user",userRouter)
-app.use("/api/admin",adminRouter)
-
+app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
 
 initializeDatabase();
-
 
 const PORT = 4000;
 
