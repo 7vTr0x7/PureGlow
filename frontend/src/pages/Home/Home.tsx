@@ -5,6 +5,7 @@ import CenterPanel from "../../components/Home/CenterPanel";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import SkinAnalyzer from "../../components/SkinAnalyser";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
+    <>
     <div className="flex flex-col lg:grid lg:grid-cols-3 h-auto bg-[#f4f3f4] font-playfair">
       <div className="panel col-span-1 p-4 lg:p-12">
         <LeftPanel />
@@ -56,6 +58,9 @@ const Home: React.FC = () => {
         <RightPanel />
       </div>
     </div>
+
+    <SkinAnalyzer />
+    </>
   );
 };
 

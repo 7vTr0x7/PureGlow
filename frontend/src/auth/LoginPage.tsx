@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import logo from "../assets/images/logo.png";
 
 
@@ -104,6 +104,8 @@ const LoginPage: React.FC = () => {
           </Link>
         </div>
       </div>
+      <Toaster />
+
     </div>
   );
 };

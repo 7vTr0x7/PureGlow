@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import logo from "../assets/images/logo.png";
 
 
@@ -22,7 +22,7 @@ const SignupPage: React.FC = () => {
     const loadingToast = toast.loading('Signing up...');
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/api/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +36,7 @@ const SignupPage: React.FC = () => {
       }
 
       const data = await response.json();
+      console.log(data)
 
       if (data.token) {
         localStorage.setItem('authToken', data.token);
@@ -104,6 +105,7 @@ const SignupPage: React.FC = () => {
           </Link>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
