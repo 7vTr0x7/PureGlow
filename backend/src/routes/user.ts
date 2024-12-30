@@ -11,7 +11,7 @@ router.post("/register",registerUser)
 
 router.get("/products",isAuthenticated,getAllProducts)
 router.get("/data",isAuthenticated,getUserData)
-router.put("/update/skin-data",isAuthenticated,updateSkinData)
+router.put("/update/skin-data/:id",isAuthenticated,updateSkinData)
 
 
 export default router

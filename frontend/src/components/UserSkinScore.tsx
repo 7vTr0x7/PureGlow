@@ -50,20 +50,20 @@ const UserSkinScore: React.FC = () => {
     };
   }, [apiUrl]);
 
-  return (
+  return  skinData && (
     <div
-      className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center text-gray-800"
+      className="flex flex-col items-center   bg-gray-100 text-center text-gray-800"
     >
       <h1 className="text-3xl font-bold mb-6">Your Skin Score</h1>
-      <div className="space-y-4">
+     <div className="space-y-4 flex justify-between items center">
         <div>
-          <span className="font-semibold">Acne Level:</span> {skinData.acne}
+          <span className="font-semibold">Acne Level:</span> {skinData?.acne}
         </div>
         <div>
-          <span className="font-semibold">Dark Spots:</span> {skinData.darkSpots}
+          <span className="font-semibold">Dark Spots:</span> {skinData?.darkSpots}
         </div>
         <div>
-          <span className="font-semibold">Hydration Level:</span> {skinData.hydrationLevel}
+          <span className="font-semibold">Hydration Level:</span> {skinData?.hydrationLevel}
         </div>
       </div>
     </div>
