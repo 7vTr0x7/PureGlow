@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import Product, { IProduct } from "../models/product.model.js"
+import { IUser } from "../models/user.model.js"
 
 export const getAllProducts = async(req:Request,res:Response) => {
 try {
@@ -14,5 +15,22 @@ try {
    }
 } catch (error) {
      res.status(500).json({success:false,message:"Failed to get products"})
+}
+}
+
+
+export const updateSkinData = async(req:Request,res:Response) => {
+try {
+   const user:IUser = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true})
+   if(user) {
+   res.json({
+    success:true,
+    user
+   })
+   }else{
+    res.status(404).json({success:false,message:"user not found"})
+   }
+} catch (error) {
+     res.status(500).json({success:false,message:"Failed to update user"})
 }
 }
