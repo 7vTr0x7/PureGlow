@@ -19,7 +19,7 @@ const CenterPanel: React.FC = () => {
 
     descriptionRef.current!.innerHTML = "";
 
-    const wordElements = words.map((word, index) => {
+    const wordElements = words.map((word) => {
       const span = document.createElement("span");
       span.innerText = word + " ";
       span.style.opacity = "0";
