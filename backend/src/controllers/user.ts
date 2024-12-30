@@ -3,6 +3,7 @@ import bcrypt from"bcrypt"
 import Product, { IProduct } from "../models/product.model.js"
 import User, { IUser } from "../models/user.model.js"
 import { sendCookies } from "../utils/features.js"
+import { AuthenticatedRequest } from "../middlewares/auth.js"
 
 type UserResponse = IUser | null
 
@@ -105,19 +106,19 @@ try {
      res.status(500).json({success:false,message:"Failed to update user"})
 }
 }
-export const getUserData = async(req:Request,res:Response) => {
-try {
-   const user:UserResponse = req.user
-   if(user) {
 
-   res.json({
-    success:true,
-    user
-   })
-   }else{
-    res.status(404).json({success:false,message:"user not found"})
-   }
-} catch (error) {
-     res.status(500).json({success:false,message:"Failed to get user"})
-}
-}
+export const getUserData = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = req.user; 
+    if (user) {
+      res.json({
+        success: true,
+        user,
+      });
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to get user" });
+  }
+};

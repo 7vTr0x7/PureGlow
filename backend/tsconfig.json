@@ -8,6 +8,20 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["node_modules/@types"],
+     "types": [
+      "node",
+      "cacheable-request",
+      "debug",
+      "emscripten",
+      "http-cache-semantics",
+      "keyv",
+      "ms",
+      "responselike",
+      "semver",
+      "treeify",
+      "validator"
+    ]
   }
 }
