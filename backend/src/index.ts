@@ -11,7 +11,10 @@ const app = express();
 const httpServer = createServer(app);
 
 const corsOptions = {
-  origin: ["https://elysian-frontend-three.vercel.app"],
+ origin: [
+    "http://localhost:5173",
+    "https://elysian-frontend-three.vercel.app", 
+  ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -29,7 +32,10 @@ app.use((req, res, next) => {
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://elysian-frontend-three.vercel.app",
+    origin: [
+    "http://localhost:5173",
+    "https://elysian-frontend-three.vercel.app", 
+  ],
     credentials: true,
   },
   transports: ["websocket", "polling"],
