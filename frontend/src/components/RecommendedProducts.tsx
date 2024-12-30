@@ -51,7 +51,6 @@ const fetchProducts = async () =>{
 
       if (data.success) {
 setProducts(data.products)
-console.log(data.products)
         setFilteredProducts(data.products)
 
       } else {
