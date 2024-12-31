@@ -13,7 +13,7 @@ const httpServer = createServer(app);
 const corsOptions = {
  origin: [
     "http://localhost:5173",
-    "https://elysian-frontend-three.vercel.app", 
+    "https://elysian-frontend-v5.vercel.app", 
   ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -34,7 +34,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: [
     "http://localhost:5173",
-    "https://elysian-frontend-three.vercel.app", 
+    "https://elysian-frontend-v5.vercel.app", 
   ],
     credentials: true,
   },
