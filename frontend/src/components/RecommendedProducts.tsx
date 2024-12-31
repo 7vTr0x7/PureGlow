@@ -81,15 +81,16 @@ setProducts(data.products)
   }, [acneLevel, darkSpots, hydrationLevel]);
 
   return (
-    <div className=" py-5 px-20 bg-[#f4f3f4]">
+    <div className=" py-5 md:px-20 px-4 bg-[#f4f3f4] w-full">
    
 
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {filteredProducts?.length > 0 && filteredProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {filteredProducts?.length > 0 &&
+    filteredProducts.map((product) => (
+      <ProductCard key={product._id} product={product} />
+    ))}
+</div>
     </div>
   );
 };

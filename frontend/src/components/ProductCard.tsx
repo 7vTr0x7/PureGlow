@@ -1,3 +1,4 @@
+
 import { IProduct } from "./Products";
 
 interface ProductCardProps {
@@ -8,7 +9,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const isInStock = product.stock > 0;
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl">
+    <div className="bg-white w-full shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl">
       <img
         src="https://via.placeholder.com/200"
         alt={product.name}
@@ -41,7 +42,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="mt-4 flex justify-center items-center">
           <button
             className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              isInStock ? "bg-gradient-to-r bg-[#cc8a68] to-purple-600 text-white hover:from-purple-600 hover:to-blue-500" : "bg-gray-400 text-white cursor-not-allowed"
+              isInStock
+                ? "bg-gradient-to-r bg-[#cc8a68] to-purple-600 text-white hover:from-purple-600 hover:to-blue-500"
+                : "bg-gray-400 text-white cursor-not-allowed"
             }`}
             disabled={!isInStock}
           >

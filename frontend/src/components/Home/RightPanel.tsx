@@ -22,15 +22,16 @@ const RightPanel: React.FC = () => {
         <p className="text-sm text-gray-500 cursor-pointer" onClick={handleLogout}>Logout</p>
       </div>
 
-      <div className=" relative overflow-hidden rounded-3xl">
-        <div className="mt-32 bg-[#ffd496] md:h-96 h-[450px] rounded-3xl">
-          <img
-            src={gif}
-            alt="Elysian Preview"
-            className="absolute top-[-10%] rounded-3xl z-[100] w-[100%] max-w-none "
-          />
-        </div>
-      </div>
+     <div className="relative overflow-hidden rounded-3xl">
+  <div className="mt-32 bg-[#ffd496] h-[300px] sm:h-[400px] md:h-[450px] lg:h-96 rounded-3xl">
+    <img
+      src={gif}
+      alt="Elysian Preview"
+      className="absolute top-[0%] rounded-3xl z-[100] w-full h-full object-cover"
+    />
+  </div>
+</div>
+
 
       <div className=" mt-20 flex items-center gap-3">
         <img alt="logo" src={logo} className="h-24 w-24" />
